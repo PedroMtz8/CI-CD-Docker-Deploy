@@ -10,7 +10,7 @@ export default function SearchBlogInput() {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const navigate = useNavigate();
 
-  const isMobile = useHandleResize({ maxWidth: 640 });
+  const isMobile = useHandleResize({ maxWidth: 768 });
 
   const debouncedSearch = useDebouncedCallback((value: string) => {
     const newUrl = value ? `/?search=${value}` : '/';
@@ -39,7 +39,7 @@ export default function SearchBlogInput() {
         isMobile && <SearchBlogMobile value={searchTerm} onChange={handleChangeMobile} onSubmit={onSubmit} />
       }
       <input
-      className=' hidden sm:block px-3 py-2 border border-gray-300 rounded-md w-60 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-300 ease-in-out'
+      className=' hidden md:block px-3 py-2 border border-gray-300 rounded-md w-60 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-300 ease-in-out'
       type="text"
       placeholder="Buscar..."
       value={searchTerm}

@@ -72,6 +72,7 @@ export default function CreateBlogModal() {
       description="Crea un blog para compartir tus ideas con el mundo."
       isOpen={isOpen}
       onClose={onClose}
+      className=' max-w-[600px] '
     >
       <div>
         <div className="space-y-4 py-2 pb-4">
