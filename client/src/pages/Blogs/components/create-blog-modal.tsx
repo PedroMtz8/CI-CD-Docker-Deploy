@@ -7,23 +7,29 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
-import { useLoginModal } from '@/hooks/useLoginModal';
-import useAuthStore from '@/auth/auth';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { Textarea } from '@/components/ui/textarea';
+import { useCreateBlogModal } from '@/hooks/useCreateBlogModal';
+import { useNavigate } from 'react-router-dom';
+import useAuthStore from '@/auth/auth';
 
 const formSchema = z.object({
-  username: z.string().min(5, 'Se requieren al menos 5 caracteres'),
-  password: z.string().min(8, 'Se requieren al menos 8 caracteres'),
+  title: z.string().min(5, 'Se requieren al menos 5 caracteres'),
+  content: z.string().min(10, 'Se requieren al menos 10 caracteres'),
 });
 
-export default function LoginModal() {
-  const { isOpen, onClose } = useLoginModal();
+export default function CreateBlogModal() {
+  const { isOpen, onClose } = useCreateBlogModal();
   const [ isLoading, setIsLoading ] = useState(false);
 
-  const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
+  const navigate = useNavigate();
 
-  const notify = (errorMessage: string) => toast.error(errorMessage, {
+  const { token } = useAuthStore();
+
+
+  const notify = (errorMessage: string, type: 'error' | 'success') => toast(errorMessage, {
+    type,
     position: 'top-center',
     autoClose: 3000,
   });
@@ -31,8 +37,8 @@ export default function LoginModal() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: '',
-      password: '',
+      title: '',
+      content: '',
     },
     shouldUnregister: true,
   });
@@ -40,30 +46,21 @@ export default function LoginModal() {
   const onSubmit = async (values: z.infer<typeof formSchema> ) => {
     try {
       setIsLoading(true);
-      const response = await axios.post("/auth/sign-in", values);
-  
-      setAuthenticated(true, response.data.accessToken, {
-        username: response.data.user.username,
-        id: response.data.user.id,
+      const response = await axios.post("/blogs", values, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
+  
 
+      navigate(`/${response.data.id}`);
+
+      notify('Blog creado correctamente', 'success');
       onClose();
     } catch (error: any) {
       const message = error.response.data.message;
-
-      const possibleErros: { [key: string]: string } = {
-        'User not found': 'Usuario no encontrado',
-        'Invalid credentials': 'Credenciales incorrectas',
-      }
-
-      const possibleErrosArray = ['User not found', 'Invalid credentials', 'Something went wrong'];
-
-      if(possibleErrosArray.includes(message.toLowerCase())) {
-        notify(possibleErros[message]);
-      }
-      else {
-        notify('Algo salió mal');
-      }
+      
+      notify(message[0] || 'Algo salió mal', 'error');
     } finally {
       setIsLoading(false);
     }
@@ -71,8 +68,8 @@ export default function LoginModal() {
 
   return (
     <Modal
-      title="Iniciar sesión"
-      description="Ingresa tus credenciales para iniciar sesión en tu cuenta."
+      title="Crear blog"
+      description="Crea un blog para compartir tus ideas con el mundo."
       isOpen={isOpen}
       onClose={onClose}
     >
@@ -82,12 +79,12 @@ export default function LoginModal() {
             <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-3'>
               <FormField
                 control={form.control}
-                name="username"
+                name="title"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Usuario</FormLabel>
+                    <FormLabel>Titulo</FormLabel>
                     <FormControl>
-                      <Input disabled={isLoading} placeholder="Usuario" {...field} />
+                      <Input disabled={isLoading} placeholder="Titulo" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -95,12 +92,12 @@ export default function LoginModal() {
               />
               <FormField
                 control={form.control}
-                name="password"
+                name="content"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Contraseña</FormLabel>
+                    <FormLabel>Contenido</FormLabel>
                     <FormControl>
-                      <Input disabled={isLoading} type="password" placeholder="Contraseña" {...field} />
+                      <Textarea className=' max-h-[200px] lg:max-h-[500px]' disabled={isLoading} placeholder="Escribe la descripción de tu blog.." {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -111,7 +108,7 @@ export default function LoginModal() {
                   Cancelar
                 </Button>
                 <Button disabled={isLoading} type="submit">
-                  Iniciar sesión {isLoading && <Loader2 className="ml-2 animate-spin duration-1000" />}
+                  Crear blog {isLoading && <Loader2 className="ml-2 animate-spin duration-1000" />}
                 </Button>
               </div>
             </form>

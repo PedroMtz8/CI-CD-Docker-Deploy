@@ -21,7 +21,7 @@ export default function BlogCard({ title, content, author, id }: BlogCardProps) 
   const truncatedContent = truncateContent(content);
 
   return (
-    <div className="w-full sm:w-2/4 md:w-[500px] h-[155px] rounded overflow-hidden shadow-lg mx-auto my-4">
+    <div className="w-full md:w-3/4 lg:w-[600px] h-[155px] rounded overflow-hidden shadow-lg mx-auto my-4">
     <div className="px-6 py-4">
       <div className="font-bold text-xl mb-2 cursor-pointer"
         onClick={() => {
