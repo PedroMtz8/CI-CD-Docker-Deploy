@@ -8,7 +8,10 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter } from 'react-router-dom';
 
-axios.defaults.baseURL = 'http://localhost:3001';
+
+const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+
+axios.defaults.baseURL = apiUrl;
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
