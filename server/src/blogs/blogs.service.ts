@@ -117,6 +117,13 @@ export class BlogsService {
     return this.blogRepository.save(newBlog);
   }
 
+  /**
+   * Method is used to update a blog
+   * @param id - string
+   * @param userId - string
+   * @param updateBlogDto - UpdateBlogDto
+  */
+
   async updateBlog(id: string, userId: string, updateBlogDto: UpdateBlogDto) {
     const blogFound = await this.blogRepository.findOne({
       where: { id },
@@ -132,7 +139,6 @@ export class BlogsService {
       throw new ForbiddenException('You are not allowed to update this blog');
     }
 
-    // Actualiza el blog con los datos proporcionados
     Object.assign(blogFound, updateBlogDto);
 
     const blog = await this.blogRepository.save(blogFound)
