@@ -4,10 +4,14 @@ import RegisterButton from '@/components/register-button';
 import UserNav from '@/components/user-nav';
 import SearchBlogInput from './search-blog';
 import CreateBlogButton from '@/pages/Blogs/components/create-blog-button';
+import useHandleResize from '@/hooks/useHandleResize';
+import NavMenu from './nav-menu';
 
 
 export default function Navbar() {
   const { isAuthenticated } = useAuth();
+
+  const isMobile = useHandleResize({ maxWidth: 768 })
 
 
   return (
@@ -27,10 +31,18 @@ export default function Navbar() {
               <UserNav />
             ) : 
             <>
-              <RegisterButton />
-              <LoginButton />
+              {
+                isMobile && <NavMenu />
+              }
+              {
+                !isMobile && <>
+                  <LoginButton />
+                  <RegisterButton />
+                </>
+              
+              }
+              
             </>
-          
           }
           
         </div>
