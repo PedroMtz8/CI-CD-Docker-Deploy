@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Blog } from '@/blogs/model/blogs.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 
 @Entity({ name: 'users' })
@@ -12,6 +13,9 @@ export class User {
   email: string;
   @Column()
   password: string;
+
+  @OneToMany(() => Blog, blog => blog.author)
+  blogs: Blog[];
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
