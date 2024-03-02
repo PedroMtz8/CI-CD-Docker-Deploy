@@ -63,7 +63,7 @@ VITE_API_URL=url_obtenida
 ```
 Esta variable la puedes extraer del log del servidor cuando se ejecutó el paso 6
 
-Deberías ver algo como: http://localhost:puerto_configurado_en_paso_4
+Deberías ver algo como: Application is running on http://localhost:puerto_configurado_en_paso_4
 
 ### 10. Correr el Cliente en Modo Desarrollo 
 ```bash

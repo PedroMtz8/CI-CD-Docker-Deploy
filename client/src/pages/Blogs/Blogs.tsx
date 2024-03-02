@@ -36,12 +36,11 @@ export default function Blogs(){
     getBlogs();
     
   }, [searchQuery])
-
   return (
     <main className='flex flex-col px-[25px] sm:px-[40px] md:px-[80px] lg:px-[100px] '>
       <h1 className="text-start text-3xl font-bold my-8">Blogs</h1>
       <section id="blogs" className="grid gap-4 ">
-        {(blogs.length < 0 && !searchQuery) ? 
+        {(blogs.length === 0 && !searchQuery) ? 
         <p>No existe ningun blog</p>
         :
 
