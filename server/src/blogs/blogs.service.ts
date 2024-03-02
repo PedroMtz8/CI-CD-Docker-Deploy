@@ -17,7 +17,11 @@ export class BlogsService {
    * Method is used to get all blogs
   */
   // params commented out for now, will be used later
-  async getAllBlogs(/* page: number = 1, pageSize: number = 10 */) {
+  async getAllBlogs(search?: string/* page: number = 1, pageSize: number = 10 */) {
+
+    if (search) {
+      return this.searchBlogs(search);
+    }
 
     const blogs = await this.blogRepository.find({
       relations: ['author'],
@@ -84,6 +88,16 @@ export class BlogsService {
         { content: Like(`%${query}%`) },
         { author: { username: Like(`%${query}%`) } },
       ],
+      relations: ['author'],
+      select: {
+        id: true,
+        title: true,
+        content: true,
+        author: {
+          id: true,
+          username: true,
+        }
+      }
     })
 
     return {

@@ -11,8 +11,8 @@ export class BlogsController {
   constructor(private blogsService: BlogsService) { }
 
   @Get()
-  async getAllBlogs() {
-    return await this.blogsService.getAllBlogs();
+  async getAllBlogs(@Query('search') search: string) {
+    return await this.blogsService.getAllBlogs(search);
   }
 
   @Get(':id')
