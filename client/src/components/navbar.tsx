@@ -2,6 +2,7 @@ import { useAuth } from '@/providers/AuthProvider';
 import LoginButton from './login-button';
 import RegisterButton from '@/components/register-button';
 import UserNav from '@/components/user-nav';
+import SearchBlogInput from './search-blog';
 
 
 export default function Navbar() {
@@ -14,6 +15,7 @@ export default function Navbar() {
         <div className='flex items-center gap-5'>
           <a href="/" className="text-2xl font-bold">Logo</a>
           {/* here will be the search */}
+          <SearchBlogInput />
         </div>
 
 
