@@ -104,7 +104,7 @@ export default function CreateBlogModal() {
                 )}
               />
               <div className="pt-6 space-x-2 flex items-center justify-end w-full">
-                <Button variant="outline" onClick={onClose}>
+                <Button variant="outline" type='button' onClick={onClose}>
                   Cancelar
                 </Button>
                 <Button disabled={isLoading} type="submit">

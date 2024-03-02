@@ -32,6 +32,7 @@ export default function RegisterModal() {
       password: '',
       email: '',
     },
+    shouldUnregister: true,
   });
 
   const notify = (errorMessage: string, status: 'error' | 'success') => toast[status](errorMessage, {
@@ -126,8 +127,23 @@ export default function RegisterModal() {
                   </FormItem>
                 )}
               />
+              
+              <div className="flex items-center justify-end w-full">
+                <span className="text-sm">¿Ya tienes una cuenta?</span>
+                <button
+                  className="text-sm text-blue-500 ml-2 cursor-pointer"
+                  type='button'
+                  onClick={() => {
+                    onClose();
+                    loginModal.onOpen();
+                  }}
+                >
+                  Iniciar sesión
+                </button>
+              </div>
+
               <div className="pt-6 space-x-2 flex items-center justify-end w-full">
-                <Button variant="outline" onClick={onClose}>
+                <Button variant="outline" type='button' onClick={onClose}>
                   Cancelar
                 </Button>
                 <Button disabled={isLoading} type="submit">

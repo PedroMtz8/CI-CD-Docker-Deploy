@@ -11,6 +11,7 @@ import { useLoginModal } from '@/hooks/useLoginModal';
 import useAuthStore from '@/auth/auth';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { useRegisterModal } from '@/hooks/useRegisterModal';
 
 const formSchema = z.object({
   username: z.string().min(5, 'Se requieren al menos 5 caracteres'),
@@ -19,13 +20,15 @@ const formSchema = z.object({
 
 export default function LoginModal() {
   const { isOpen, onClose } = useLoginModal();
+  const registerModal = useRegisterModal();
   const [ isLoading, setIsLoading ] = useState(false);
 
   const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
 
-  const notify = (errorMessage: string) => toast.error(errorMessage, {
+  const notify = (errorMessage: string, type: 'error' | 'success' ) => toast.error(errorMessage, {
     position: 'top-center',
-    autoClose: 3000,
+    autoClose: 2000,
+    type,
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -47,6 +50,8 @@ export default function LoginModal() {
         id: response.data.user.id,
       });
 
+      notify('Inicio de sesión exitoso', 'success');
+
       onClose();
     } catch (error: any) {
       const message = error.response.data.message;
@@ -57,12 +62,11 @@ export default function LoginModal() {
       }
 
       const possibleErrosArray = ['User not found', 'Invalid credentials', 'Something went wrong'];
-
-      if(possibleErrosArray.includes(message.toLowerCase())) {
-        notify(possibleErros[message]);
+      if(possibleErrosArray.includes(message)) {
+        notify(possibleErros[message], 'error');
       }
       else {
-        notify('Algo salió mal');
+        notify('Algo salió mal', 'error');
       }
     } finally {
       setIsLoading(false);
@@ -106,8 +110,24 @@ export default function LoginModal() {
                   </FormItem>
                 )}
               />
+            
+              <div className="flex items-center justify-end w-full">
+                <span className="text-sm">¿No tienes una cuenta?</span>
+                <button
+                  className="text-sm text-blue-500 ml-2 cursor-pointer"
+                  type='button'
+                  onClick={() => {
+                    onClose();
+                    registerModal.onOpen();
+                  }}
+                >
+                  Registrate
+                </button>
+              </div>
+
+
               <div className="pt-6 space-x-2 flex items-center justify-end w-full">
-                <Button variant="outline" onClick={onClose}>
+                <Button variant="outline" onClick={onClose} type='button' >
                   Cancelar
                 </Button>
                 <Button disabled={isLoading} type="submit">

@@ -8,11 +8,22 @@ import {
   // DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { toast } from 'react-toastify';
 
 
 export default function UserNav(){
   
   const { clearAuthState } = useAuthStore();
+  const notify = (errorMessage: string, type: 'error' | 'success' ) => toast(errorMessage, {
+    position: 'top-center',
+    autoClose: 2000,
+    type,
+  });
+
+  const handleLogout = () => {
+    clearAuthState();
+    notify('Sesión cerrada', 'success');
+  }
 
   return (
     <>
@@ -27,7 +38,7 @@ export default function UserNav(){
         {/* <DropdownMenuLabel>Cerrar sesión</DropdownMenuLabel> */}
         {/* <DropdownMenuSeparator /> */}
         <DropdownMenuItem
-          onClick={clearAuthState}
+          onClick={handleLogout}
         >
           Cerrar sesión
         </DropdownMenuItem>
