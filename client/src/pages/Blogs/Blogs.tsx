@@ -1,9 +1,9 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import BlogCard, { Author } from './blog-card';
+import BlogCard, { Author } from './components/blog-card';
 import { useLocation } from 'react-router-dom';
 
-interface Blog {
+export interface Blog {
   title: string;
   content: string;
   author: Author
@@ -46,7 +46,7 @@ export default function Blogs(){
         :
 
         blogs.map((blog) => (
-          <BlogCard key={blog.id} title={blog.title} content={blog.content} author={blog.author} />
+          <BlogCard key={blog.id} id={blog.id} title={blog.title} content={blog.content} author={blog.author} />
         ))
         }
         {
