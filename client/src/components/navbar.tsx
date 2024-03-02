@@ -3,6 +3,7 @@ import LoginButton from './login-button';
 import RegisterButton from '@/components/register-button';
 import UserNav from '@/components/user-nav';
 import SearchBlogInput from './search-blog';
+import CreateBlogButton from '@/pages/Blogs/components/create-blog-button';
 
 
 export default function Navbar() {
@@ -18,8 +19,8 @@ export default function Navbar() {
           <SearchBlogInput />
         </div>
 
-
         <div className="ml-auto flex items-center space-x-4 ">
+          <CreateBlogButton />
 
           {
             isAuthenticated ? (

@@ -6,10 +6,9 @@ interface AuthStore {
   token: string | null;
   user: {
     username: string;
-    email: string;
     id: string;
   };
-  setAuthenticated: (value: boolean, token: string, user: { username: string; email: string; id: string }) => void;
+  setAuthenticated: (value: boolean, token: string, user: { username: string; id: string }) => void;
   clearAuthState: () => void;
 }
 
@@ -18,7 +17,7 @@ const useAuthStore = create<AuthStore>((set) => {
   const storedIsAuthenticated = Cookies.get('isAuthenticated') === 'true';
   const storedToken = Cookies.get('token') || null;
   const storeduserString = Cookies.get('user');
-  const storeduser = storeduserString ? JSON.parse(storeduserString) : { username: '', email: '', id: '' };
+  const storeduser = storeduserString ? JSON.parse(storeduserString) : { username: '', id: '' };
 
   const initialState: AuthStore = {
     isAuthenticated: storedIsAuthenticated,
@@ -39,7 +38,7 @@ const useAuthStore = create<AuthStore>((set) => {
       }
     },
     clearAuthState: () => {
-      set({ isAuthenticated: false, token: null, user: { username: '', email: '', id: '' } });
+      set({ isAuthenticated: false, token: null, user: { username: '', id: '' } });
       Cookies.remove('isAuthenticated');
       Cookies.remove('token');
       Cookies.remove('user');
