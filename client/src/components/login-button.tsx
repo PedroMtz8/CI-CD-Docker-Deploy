@@ -7,6 +7,6 @@ export default function LoginButton() {
   const loginStore = useLoginModal();
 
   return (
-      <Button onClick={loginStore.onOpen}>Iniciar sesión</Button>
+      <Button className='w-[115px]' onClick={loginStore.onOpen}>Iniciar sesión</Button>
   );
 };

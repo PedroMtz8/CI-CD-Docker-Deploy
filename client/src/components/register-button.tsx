@@ -7,7 +7,7 @@ export default function RegisterButton() {
   const registerModal = useRegisterModal();
 
   return (
-      <Button variant="outline" onClick={registerModal.onOpen}>Registrarse</Button>
+      <Button className='w-[115px]' variant="outline" onClick={registerModal.onOpen}>Registrarse</Button>
   );
 };
 

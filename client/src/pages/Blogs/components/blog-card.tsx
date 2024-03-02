@@ -21,8 +21,8 @@ export default function BlogCard({ title, content, author, id }: BlogCardProps) 
   const truncatedContent = truncateContent(content);
 
   return (
-    <div className="w-full md:w-3/4 lg:w-[600px] h-[155px] rounded overflow-hidden shadow-lg mx-auto my-4">
-    <div className="px-6 py-4">
+    <div className="w-full md:w-3/4 lg:w-[600px] h-[235px] sm:h-[130px] md:h-[175px] rounded overflow-hidden shadow-lg mx-auto my-4">
+    <div className="h-full px-6 py-4 flex flex-col gap-2 ">
       <div className="font-bold text-xl mb-2 cursor-pointer"
         onClick={() => {
           navigate(`/${id}`)
@@ -31,7 +31,7 @@ export default function BlogCard({ title, content, author, id }: BlogCardProps) 
         {title}
       </div>
       <p className="text-gray-700 text-xs  mb-2 whitespace-pre-line">Creado por {author.username}</p>
-      <p className="text-gray-700 whitespace-pre-line">{truncatedContent}</p>
+      <p className="text-gray-700 whitespace-pre-line h-full overflow-hidden ">{truncatedContent}</p>
     </div>
   </div>
   );

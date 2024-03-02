@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Blog } from '../Blogs';
 import useAuthStore from '@/auth/auth';
@@ -11,6 +11,7 @@ export default function BlogDetail() {
   const [blog, setBlog] = useState<Blog | null>(null);
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
+  const navigate = useNavigate();
 
   const { user, token } = useAuthStore();
   const { id } = useParams();
@@ -20,12 +21,12 @@ export default function BlogDetail() {
     async function getBlog() {
       try {
         const response = await axios.get(`/blogs/${id}`);
-
         if (response.data.blog) {
           window.document.title = response.data.blog.title;
           setBlog(response.data.blog);
         }
       } catch (error: any) {
+        window.document.title = 'Blog no encontrado';
         console.error(error);
       } finally {
         setLoading(false);
@@ -72,7 +73,18 @@ export default function BlogDetail() {
   }
 
   if (!blog) {
-    return <p>No se encontró el blog</p>;
+    return (
+      <div className='max-w-2xl mx-auto mt-8 p-4 rounded-md grid gap-3'>
+        <p>No se encontró el blog</p>
+
+        <div>
+          <Button variant='secondary' onClick={() => {
+            navigate('/');
+          }}>Ir a blogs</Button>
+        </div>
+
+      </div>
+    );
   }
 
   return (
