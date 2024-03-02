@@ -18,7 +18,7 @@ export default function Navbar() {
     <nav className="border-b">
       <div className="flex h-16 items-center px-4 xl:px-[40px] ">
         <div className='flex items-center gap-5'>
-          <a href="/" className="text-2xl font-bold">Logo</a>
+          <a href="/" className="text-2xl font-bold mb-1">Logo</a>
           {/* here will be the search */}
           <SearchBlogInput />
         </div>
@@ -36,8 +36,8 @@ export default function Navbar() {
               }
               {
                 !isMobile && <>
-                  <LoginButton />
                   <RegisterButton />
+                  <LoginButton />
                 </>
               
               }
