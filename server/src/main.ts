@@ -9,6 +9,9 @@ const port = PORT
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter({ logger: true }));
   app.useGlobalPipes(new ValidationPipe());
+  app.enableCors({
+    origin: true,
+  });
   await app.listen(port);
   console.log(`Application is running on: http://localhost:${port}`);
 }
