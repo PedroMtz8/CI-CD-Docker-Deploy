@@ -19,12 +19,12 @@ Asegúrate de tener un servidor MySQL instalado y ejecuta los siguientes comando
 CREATE DATABASE blogs;
 ```
 
-### 4. Configurar Variables de Entorno
+### 4. Configurar Variables de Entorno del servidor
 Entra a la carpeta server y crea un archivo .env con las siguientes variables, ajustándolas según tu configuración local:
 ```bash
 cd server
 
-PORT=3000
+PORT=3001
 
 DATABASE_HOST=localhost
 DATABASE_PORT=3306
@@ -46,8 +46,9 @@ npm run start:dev
 ```
 
 ### 7. Entrar a la Carpeta del Cliente
+Abrir otra terminal en la raiz del proyecto y entrar a la carpeta client
 ```bash
-cd ../client
+cd client
 ```
 
 ### 8. Instalar Dependencias del Cliente
@@ -55,10 +56,19 @@ cd ../client
 npm install
 ```
 
-### 9. Correr el Cliente en Modo Desarrollo 
+### 10. Configurar Variable de Entorno del cliente
+En la carpeta del cliente, generar un archivo .env y agregar la siguiente variable
+```bash
+VITE_API_URL=url_obtenida
+```
+Esta variable la puedes extraer del log del servidor cuando se ejecutó el paso 6
+
+Deberías ver algo como: http://localhost:puerto_configurado_en_paso_4
+
+### 10. Correr el Cliente en Modo Desarrollo 
 ```bash
 npm run dev
 ```
 
-### 10. Abrir el Cliente en un Navegador
+### 11. Abrir el Cliente en un Navegador
 Abre tu navegador y visita http://localhost:5173 o clickea el mismo enlace para visualizar el cliente React con Vite.
