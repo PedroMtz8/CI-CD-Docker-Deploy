@@ -62,8 +62,7 @@ export default function LoginModal() {
       }
 
       const possibleErrosArray = ['User not found', 'Invalid credentials', 'Something went wrong'];
-
-      if(possibleErrosArray.includes(message.toLowerCase())) {
+      if(possibleErrosArray.includes(message)) {
         notify(possibleErros[message], 'error');
       }
       else {
