@@ -4,12 +4,15 @@ import { Blog } from '../model/blogs.entity';
 import { CreateBlogDto, UpdateBlogDto } from '../dto/blogs.dto';
 import { Request } from 'express';
 import { JwtAuthGuard } from '@/auth/jwt/jwt.guard';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('blogs')
 @Controller('blogs')
 export class BlogsController {
 
   constructor(private blogsService: BlogsService) { }
 
+  @ApiQuery({ name: 'search', required: false, type: String })
   @Get()
   async getAllBlogs(@Query('search') search: string) {
     return await this.blogsService.getAllBlogs(search);
@@ -29,6 +32,7 @@ export class BlogsController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Post()
   async createBlog(
     @Body() body: CreateBlogDto,
@@ -39,6 +43,7 @@ export class BlogsController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Put(':id')
   async updateBlog(
     @Param('id') id: string,
