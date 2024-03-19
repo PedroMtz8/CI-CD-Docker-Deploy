@@ -16,4 +16,7 @@ export class Blog {
   @ManyToOne(() => User, user => user.blogs)
   author: User;
 
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
+
 }

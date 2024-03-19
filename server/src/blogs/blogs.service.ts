@@ -32,10 +32,13 @@ export class BlogsService {
         author: {
           id: true,
           username: true,
-        }
+        },
       },
       // skip: (page - 1) * pageSize,
       // take: pageSize,
+      order: {
+        createdAt: 'DESC', // or 'ASC' for ascending order
+      },
     })
 
     return {
