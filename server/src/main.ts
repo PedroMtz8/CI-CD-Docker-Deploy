@@ -8,8 +8,9 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 const port = PORT
 
 async function bootstrap() {
-  const isProd = process.env.NODE_ENV === 'production';
-
+  // const isProd = process.env.NODE_ENV === 'production';
+  const isProd = true;
+  // console.log('isProd', isProd)
   const app = isProd ?
     await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter({ logger: true }))
     :
@@ -23,12 +24,12 @@ async function bootstrap() {
   if (!isProd) {
 
     const config = new DocumentBuilder()
-    .setTitle('Blogs example')
-    .addBearerAuth()
-    .setDescription('The blogs API description')
-    .setVersion('1.0')
-    .addTag('blogs')
-    .build();
+      .setTitle('Blogs example')
+      .addBearerAuth()
+      .setDescription('The blogs API description')
+      .setVersion('1.0')
+      .addTag('blogs')
+      .build();
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('docs', app, document);
   }
