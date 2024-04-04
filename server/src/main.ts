@@ -4,17 +4,19 @@ import { ValidationPipe } from '@nestjs/common';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { PORT } from 'src/constants/index';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { WinstonModule } from 'nest-winston';
+import { instance } from './logger/winston.config';
+import { LoggerFactory } from './logger/LoggerFactory';
 
 const port = PORT
 
 async function bootstrap() {
-  // const isProd = process.env.NODE_ENV === 'production';
   const isProd = true;
-  // console.log('isProd', isProd)
-  const app = isProd ?
-    await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter({ logger: true }))
-    :
-    await NestFactory.create(AppModule);
+  // const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter())
+  const app = await NestFactory.create(AppModule, {
+    logger: LoggerFactory('NestJS'),
+  })
+
 
   app.useGlobalPipes(new ValidationPipe());
   app.enableCors({
