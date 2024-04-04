@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Inject, MiddlewareConsumer, Module, OnApplicationBootstrap } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -6,10 +6,18 @@ import { AppConfigModule } from '@/config/config.module';
 import { UsersModule } from '@/users/users.module';
 import { AuthModule } from '@/auth/auth.module';
 import { BlogsModule } from '@/blogs/blogs.module';
+import { CorrelationIdMiddleware } from '@/correlation-id/correlation-id.middleware';
+import { ConfigModule } from '@nestjs/config';
+import { LoggerModule } from '@/loggerV2/logger.module';
+import { LOGGER } from '@/config/logger.factory';
+import { Logger } from 'winston';
+import { RequestLoggerMiddleware } from '@/request-logger.middleware';
 
 @Module({
   imports: [
+    // ConfigModule.forRoot(),
     AppConfigModule,
+    // LoggerModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DATABASE_HOST,
@@ -27,4 +35,16 @@ import { BlogsModule } from '@/blogs/blogs.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+
+export class AppModule /* implements OnApplicationBootstrap */ {
+  // constructor(@Inject(LOGGER) private logger: Logger) { }
+
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(CorrelationIdMiddleware, RequestLoggerMiddleware).forRoutes('*');
+  }
+  // onApplicationBootstrap(): any {
+  //   this.logger.info('Application bootstrap success!', {
+  //     type: 'APP_BOOTSTRAP',
+  //   });
+  // }
+}

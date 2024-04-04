@@ -5,16 +5,18 @@ import { CreateBlogDto, UpdateBlogDto } from '../dto/blogs.dto';
 import { Request } from 'express';
 import { JwtAuthGuard } from '@/auth/jwt/jwt.guard';
 import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { Logger } from '@nestjs/common';
 
 @ApiTags('blogs')
 @Controller('blogs')
 export class BlogsController {
-
+  private readonly logger = new Logger(BlogsController.name);
   constructor(private blogsService: BlogsService) { }
 
   @ApiQuery({ name: 'search', required: false, type: String })
   @Get()
-  async getAllBlogs(@Query('search') search: string) {
+  async getAllBlogs(@Query('search') search: string, @Req() req: Request) {
+    this.logger.log(`Getting all blogs, Correlation ID: ${req.headers['x-correlation-id']}`);
     return await this.blogsService.getAllBlogs(search);
   }
 
