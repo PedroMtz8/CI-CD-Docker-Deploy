@@ -36,15 +36,10 @@ import { RequestLoggerMiddleware } from '@/request-logger.middleware';
   providers: [AppService],
 })
 
-export class AppModule /* implements OnApplicationBootstrap */ {
-  // constructor(@Inject(LOGGER) private logger: Logger) { }
+export class AppModule {
 
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(CorrelationIdMiddleware, RequestLoggerMiddleware).forRoutes('*');
   }
-  // onApplicationBootstrap(): any {
-  //   this.logger.info('Application bootstrap success!', {
-  //     type: 'APP_BOOTSTRAP',
-  //   });
-  // }
+
 }

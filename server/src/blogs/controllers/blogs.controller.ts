@@ -16,6 +16,7 @@ export class BlogsController {
   @ApiQuery({ name: 'search', required: false, type: String })
   @Get()
   async getAllBlogs(@Query('search') search: string, @Req() req: Request) {
+    console.log('db', process.env.DATABASE_USER)
     this.logger.log(`Getting all blogs, Correlation ID: ${req.headers['x-correlation-id']}`);
     return await this.blogsService.getAllBlogs(search);
   }
