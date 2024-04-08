@@ -63,7 +63,7 @@ jobs:
       - name: Set up SSH
         run: |
             mkdir -p ~/.ssh
-            echo "${{ vars.PRIVATE_KEY_DEV }}" > ~/.ssh/id_rsa
+            echo ${{ vars.PRIVATE_KEY_DEV }} > ~/.ssh/id_rsa
             chmod 600 ~/.ssh/id_rsa
             ssh-keyscan -t rsa ${{ vars.DEV_IP }} >> ~/.ssh/known_hosts
 
@@ -118,7 +118,7 @@ jobs:
       - name: Set up SSH
         run: |
             mkdir -p ~/.ssh
-            echo "${{ vars.PRIVATE_KEY_PROD }}" > ~/.ssh/id_rsa
+            echo ${{ vars.PRIVATE_KEY_PROD }} > ~/.ssh/id_rsa
             chmod 600 ~/.ssh/id_rsa
             ssh-keyscan -t rsa ${{ vars.PROD_IP }} >> ~/.ssh/known_hosts
 
