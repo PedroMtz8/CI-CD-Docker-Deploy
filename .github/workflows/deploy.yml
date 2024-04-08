@@ -62,7 +62,7 @@ jobs:
       
       - name: Add Mask
         run: |
-          echo "::add-mask::${{ vars.PRIVATE_KEY_DEV }}"
+          echo "::add-mask::${{ secrets.PRIVATE_KEY_DEV }}"
           echo "::add-mask::${{ vars.AUTH_SERVER_DEV }}"
           echo "::add-mask::${{ vars.DEV_IP }}"
           echo "::add-mask::${{ vars.ENV_PATH }}"
@@ -71,7 +71,7 @@ jobs:
       - name: Set up SSH
         run: |
             mkdir -p ~/.ssh
-            echo "${{ vars.PRIVATE_KEY_DEV }}" > ~/.ssh/id_rsa
+            echo "${{ secrets.PRIVATE_KEY_DEV }}" > ~/.ssh/id_rsa
             chmod 600 ~/.ssh/id_rsa
             ssh-keyscan -t rsa ${{ vars.DEV_IP }} >> ~/.ssh/known_hosts
 
@@ -125,16 +125,22 @@ jobs:
 
       - name: Add Mask
         run: |
-          echo "::add-mask::${{ vars.PRIVATE_KEY_PROD }}"
           echo "::add-mask::${{ vars.AUTH_SERVER_PROD }}"
           echo "::add-mask::${{ vars.PROD_IP }}"
           echo "::add-mask::${{ vars.ENV_PATH }}"
           echo "::add-mask::${{ secrets.TOKEN_DEPLOY }}"
 
+      - name: Add Mask to Multiple lines
+        id: private_key_prod
+        run: |
+          echo "::add-mask::${{ secrets.PRIVATE_KEY_PROD }}"
+          echo "::set-output name=private_key_prod::${{ secrets.PRIVATE_KEY_PROD }}"
+
       - name: Set up SSH
         run: |
             mkdir -p ~/.ssh
-            printf "%s\n" "${{ vars.PRIVATE_KEY_PROD }}" > ~/.ssh/id_rsa
+
+            echo "${{ steps.private_key_prod.outputs.private_key_prod }}" > ~/.ssh/id_rsa
 
             chmod 600 ~/.ssh/id_rsa
             ssh-keyscan -t rsa ${{ vars.PROD_IP }} >> ~/.ssh/known_hosts
