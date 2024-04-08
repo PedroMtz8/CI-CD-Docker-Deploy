@@ -59,11 +59,19 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+      
+      - name: Add Mask
+        run: |
+          echo "::add-mask::${{ vars.PRIVATE_KEY_DEV }}"
+          echo "::add-mask::${{ vars.AUTH_SERVER_DEV }}"
+          echo "::add-mask::${{ vars.DEV_IP }}"
+          echo "::add-mask::${{ vars.ENV_PATH }}"
+          echo "::add-mask::${{ secrets.TOKEN_DEPLOY }}"
 
       - name: Set up SSH
         run: |
             mkdir -p ~/.ssh
-            printf '%s' "${{ vars.PRIVATE_KEY_DEV }}" > ~/.ssh/id_rsa
+            echo "${{ vars.PRIVATE_KEY_DEV }}" > ~/.ssh/id_rsa
             chmod 600 ~/.ssh/id_rsa
             ssh-keyscan -t rsa ${{ vars.DEV_IP }} >> ~/.ssh/known_hosts
 
@@ -115,10 +123,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Add Mask
+        run: |
+          echo "::add-mask::${{ vars.PRIVATE_KEY_PROD }}"
+          echo "::add-mask::${{ vars.AUTH_SERVER_PROD }}"
+          echo "::add-mask::${{ vars.PROD_IP }}"
+          echo "::add-mask::${{ vars.ENV_PATH }}"
+          echo "::add-mask::${{ secrets.TOKEN_DEPLOY }}"
+
       - name: Set up SSH
         run: |
             mkdir -p ~/.ssh
-            printf '%s' "${{ vars.PRIVATE_KEY_PROD }}" > ~/.ssh/id_rsa
+            echo "${{ vars.PRIVATE_KEY_PROD }}" > ~/.ssh/id_rsa
 
             chmod 600 ~/.ssh/id_rsa
             ssh-keyscan -t rsa ${{ vars.PROD_IP }} >> ~/.ssh/known_hosts
