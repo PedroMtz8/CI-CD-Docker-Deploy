@@ -4,7 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { SignInDto } from './dto/sign-in.dto';
 import { SignUpDto } from './dto/sign-up.dto';
-import { hash } from 'bcrypt';
+import { hash } from 'bcryptjs';
 import { User } from '@/users/models/users.entity';
 
 @Injectable()
