@@ -24,16 +24,16 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.TOKEN_DEPLOY }}
 
-      # - name: Determine Image Name
-      #   id: image_name
-      #   run: echo ::set-output name=name::payments${{ if eq(github.ref, 'refs/heads/develop') }}-dev{{ endif }}
-
       - name: Determine Branch Name
         id: branch_name
         run: echo ::set-output name=branch::$(basename ${{ github.ref }})
 
+      - name: Navigate to server directory
+        run: cd server
+
       - name: Build Docker Image
         run: |
+          cd server
           if [ "${{ steps.branch_name.outputs.branch }}" == "master" ]; then
             docker build . --tag ghcr.io/onecarnow/payments:latest
           else
@@ -84,7 +84,7 @@ jobs:
 
           echo "Docker into SSH..."
           docker pull ghcr.io/onecarnow/payments-dev:latest
-          docker run -d -p 4000:4000 \
+          docker run -d -p 3001:3001 \
             --name \$CONTAINER_NAME \
             --env-file ${{ vars.ENV_PATH }} \
             ghcr.io/onecarnow/payments-dev:latest
@@ -139,7 +139,7 @@ jobs:
 
           echo "Docker into SSH..."
           docker pull ghcr.io/onecarnow/payments:latest
-          docker run -d -p 4000:4000 \
+          docker run -d -p 3001:3001 \
             --name \$CONTAINER_NAME \
             --env-file ${{ vars.ENV_PATH }} \
             ghcr.io/onecarnow/payments:latest
