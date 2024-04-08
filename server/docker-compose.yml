@@ -1,0 +1,11 @@
+version: '3.8'
+name: blogs
+  
+services:
+  app:
+    build: .
+    container_name: blogs
+    env_file:
+      - .env
+    ports:
+      - $PORT:$PORT
