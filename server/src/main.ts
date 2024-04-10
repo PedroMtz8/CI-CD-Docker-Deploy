@@ -1,10 +1,10 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app/app.module';
+import { AppModule } from '@/app/app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
-import { PORT, isProd } from 'src/constants/index';
-import logger from './logger.config';
-import setupSwagger from './swagger.config';
+import { PORT, isProd } from '@constants/index';
+import logger from '@config/logger.config';
+import setupSwagger from '@config/swagger.config';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter(), {
