@@ -1,9 +1,16 @@
+import { User as UserEntity } from '@/users/models/users.entity';
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 
+
+export type UserDecorator = Omit<UserEntity, 'password' | 'createdAt' | 'blogs'>
+  & {
+    iat: number;
+    exp: number;
+  };
+
 export const User = createParamDecorator(
-  (data: unknown, ctx: ExecutionContext) => {
+  (_: unknown, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();
-    console.log('request user', request.user);
     return request.user;
   },
 );

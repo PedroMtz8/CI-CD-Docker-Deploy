@@ -5,7 +5,12 @@ import { CreateBlogDto, UpdateBlogDto } from '../dto/blogs.dto';
 import { Request } from 'express';
 import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Logger } from '@nestjs/common';
+import { Public } from '@/auth/guard/public.decorator';
+import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from '@/auth/guard/jwt-auth.guard';
+import { User, UserDecorator } from '@/auth/user.decorator';
 
+@Public()
 @ApiTags('blogs')
 @Controller('blogs')
 export class BlogsController {
@@ -32,16 +37,18 @@ export class BlogsController {
     return await this.blogsService.searchBlogs(query);
   }
 
+  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @Post()
   async createBlog(
     @Body() body: CreateBlogDto,
-    @Req() req: Request
+    @User() user: UserDecorator,
   ): Promise<Blog> {
-    const reqUserId = req.userData.userId;
+    const reqUserId = user.id;
     return this.blogsService.createBlog(reqUserId, body);
   }
 
+  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @Put(':id')
   async updateBlog(
