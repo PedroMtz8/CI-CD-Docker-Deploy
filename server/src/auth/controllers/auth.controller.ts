@@ -3,6 +3,7 @@ import { AuthService } from '../auth.service';
 import { SignInDto } from '../dto/sign-in.dto';
 import { SignUpDto } from '../dto/sign-up.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { Public } from '../guard/public.decorator';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -14,6 +15,7 @@ export class AuthController {
     return this.authService.signUp(signUpDto);
   }
 
+  @Public()
   @Post('sign-in')
   signIn(@Body() signInDto: SignInDto): Promise<{ accessToken: string }> {
     return this.authService.signIn(signInDto);

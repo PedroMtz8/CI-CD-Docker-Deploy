@@ -10,7 +10,7 @@ export class RequestLoggerMiddleware implements NestMiddleware {
       const statusCode = res.statusCode;
       const correlationId = req.headers['x-correlation-id'];
 
-      if (statusCode === 401 || statusCode === 404 || statusCode === 405) {
+      if (statusCode === 401 || statusCode === 403 || statusCode === 404 || statusCode === 405) {
         this.logger.warn(`[${req.method}] ${req.url} - ${statusCode}  - Correlation ID: ${correlationId}`);
       } else if (statusCode === 400 || statusCode >= 500) {
         this.logger.error(`[${req.method}] ${req.url} - ${statusCode}  - Correlation ID: ${correlationId}`);

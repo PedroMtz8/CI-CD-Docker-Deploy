@@ -11,7 +11,7 @@ import { User } from '@/users/models/users.entity';
 export class AuthService {
   constructor(
     private readonly usersService: UsersService,
-    private readonly jwtService: JwtService,
+    private readonly jwtService: JwtService
   ) { }
 
   /** 
@@ -46,10 +46,9 @@ export class AuthService {
    * @param signInDto.password - string
    * @returns Promise<{ accessToken: string }>
   */
-
   async signIn(signInDto: SignInDto): Promise<{ accessToken: string, user: User }> {
     const user = await this.usersService.validateUser(signInDto);
-    const payload = { username: user.username, userId: user.id };
+    const payload = { username: user.username, userId: user.id, email: user.email };
     const accessToken = this.jwtService.sign(payload);
 
     return { accessToken, user };

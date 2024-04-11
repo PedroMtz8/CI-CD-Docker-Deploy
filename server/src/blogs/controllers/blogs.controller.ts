@@ -3,7 +3,6 @@ import { BlogsService } from '../blogs.service';
 import { Blog } from '../model/blogs.entity';
 import { CreateBlogDto, UpdateBlogDto } from '../dto/blogs.dto';
 import { Request } from 'express';
-import { JwtAuthGuard } from '@/auth/jwt/jwt.guard';
 import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Logger } from '@nestjs/common';
 
@@ -16,7 +15,6 @@ export class BlogsController {
   @ApiQuery({ name: 'search', required: false, type: String })
   @Get()
   async getAllBlogs(@Query('search') search: string, @Req() req: Request) {
-    console.log('db', process.env.DATABASE_USER)
     this.logger.log(`Getting all blogs, Correlation ID: ${req.headers['x-correlation-id']}`);
     return await this.blogsService.getAllBlogs(search);
   }
@@ -34,7 +32,6 @@ export class BlogsController {
     return await this.blogsService.searchBlogs(query);
   }
 
-  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @Post()
   async createBlog(
@@ -45,7 +42,6 @@ export class BlogsController {
     return this.blogsService.createBlog(reqUserId, body);
   }
 
-  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @Put(':id')
   async updateBlog(
