@@ -6,7 +6,6 @@ import { Request } from 'express';
 import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Logger } from '@nestjs/common';
 import { Public } from '@/auth/guard/public.decorator';
-import { AuthGuard } from '@nestjs/passport';
 import { JwtAuthGuard } from '@/auth/guard/jwt-auth.guard';
 import { User, UserDecorator } from '@/auth/user.decorator';
 
@@ -54,10 +53,9 @@ export class BlogsController {
   async updateBlog(
     @Param('id') id: string,
     @Body() blog: UpdateBlogDto,
-    @Req() req: Request,
+    @User() user: UserDecorator,
   ) {
-    const reqUserId = req.userData.userId;
-    return await this.blogsService.updateBlog(id, reqUserId, blog);
+    return await this.blogsService.updateBlog(id, user.id, blog);
   }
 
 }
