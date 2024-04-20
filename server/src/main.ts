@@ -5,6 +5,7 @@ import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify
 import logger from '@config/logger.config';
 import setupSwagger from '@config/swagger.config';
 import { ConfigService } from '@nestjs/config';
+import { setupGlobalPipes } from './config/setupValidationPipe';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter(), {
@@ -20,7 +21,8 @@ async function bootstrap() {
 
   const isProd = configService.get('NODE_ENV') === 'production';
 
-  app.useGlobalPipes(new ValidationPipe());
+  setupGlobalPipes(app);
+
   app.enableCors({
     origin: true,
   });
