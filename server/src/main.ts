@@ -14,6 +14,9 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   const PORT = configService.get('PORT');
+  const dbname = configService.get('DATABASE_NAME');
+  console.log('PORT', PORT);
+  console.log('dbname', dbname);
 
   const isProd = configService.get('NODE_ENV') === 'production';
 
