@@ -88,7 +88,10 @@ jobs:
 
           echo "Docker into SSH..."
           docker pull ghcr.io/pedromtz8/ci_cd-dev:latest
-          docker run -d -p 3001:3001 \
+
+          PORT=$(grep -E '^PORT=' "${{ secrets.ENV_PATH }}" | cut -d'=' -f2)
+
+          docker run -d -p $PORT:$PORT \
             --name \$CONTAINER_NAME \
             --env-file ${{ secrets.ENV_PATH }} \
             ghcr.io/pedromtz8/ci_cd-dev:latest
