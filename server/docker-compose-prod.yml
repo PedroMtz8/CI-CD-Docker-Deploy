@@ -1,11 +1,11 @@
 version: '3.8'
-name: blogs
+name: blogs_container
   
 services:
-  mysql:
+  mysql_2:
     image: mysql:latest
-    container_name: mysql
-    restart: always
+    container_name: mysql_v2
+    # restart: always
     env_file:
       - .env
     environment:
@@ -16,16 +16,16 @@ services:
 
   app:
     depends_on:
-      - mysql
+      - mysql_2
     build: .
-    container_name: blogs
-    image: blogs
+    container_name: blogs_v2
+    image: blogs:2
     env_file:
       - .env
     environment:
-      - DATABASE_HOST=mysql
+      - DATABASE_HOST=mysql_2
     ports:
-      - $PORT:$PORT
+      - 4000:4000
     volumes:
-      - .:/myapp
-      # - ./dist:/myapp/dist
+      # - .:/myapp
+      - ./dist:/myapp/dist
